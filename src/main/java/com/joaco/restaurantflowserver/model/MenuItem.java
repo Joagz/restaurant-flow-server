@@ -12,13 +12,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "menu_items")
+@Table(name = "menus")
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MenuItem {
 
   @Id
@@ -27,7 +29,6 @@ public class MenuItem {
   @Column(name = "menu_id")
   private int id;
   private String name;
-  private List<String> items;
   private String price;
   private String description;
   private boolean available;

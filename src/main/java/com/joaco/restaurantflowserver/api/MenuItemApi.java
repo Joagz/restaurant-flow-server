@@ -33,7 +33,6 @@ public class MenuItemApi {
     MenuItem save = new MenuItem(
         (Integer) null,
         menuItem.name(),
-        menuItem.items(),
         menuItem.price(),
         menuItem.description(),
         true);
