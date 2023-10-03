@@ -43,12 +43,12 @@ public class OrderApi {
   @PostMapping
   public ResponseEntity<Order> createOrder(@RequestBody OrderDto order) {
     Order save = new Order(
-        null,
+        (Integer) null,
         order.name(),
-        0, new Date(),
+        new Date(),
         false,
         order.items());
-        
+
     repository.save(save);
 
     return new ResponseEntity<Order>(save,

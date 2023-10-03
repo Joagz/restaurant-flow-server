@@ -31,7 +31,7 @@ public class MenuItemApi {
   public ResponseEntity<MenuItem> createMenuItem(@RequestBody MenuItemDto menuItem) {
 
     MenuItem save = new MenuItem(
-        null,
+        (Integer) null,
         menuItem.name(),
         menuItem.items(),
         menuItem.price(),

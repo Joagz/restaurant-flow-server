@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,14 +24,14 @@ import lombok.Setter;
 public class Order {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID, generator = "native")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name = "native", strategy = "native")
-  private String id;
+  @Column(name = "order_id")
+  private int id;
   private String name;
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int priority;
-  private Date created;
+  @Column(name = "create_time")
+  private Date createTime;
   private boolean completed;
 
   @OneToMany
