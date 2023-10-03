@@ -1,20 +1,8 @@
 package com.joaco.restaurantflowserver.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Getter;
-
-@Getter
-public class PaymentMethod {
-
-  // todo: implement encoding
-
-  private String fullName;
-  @JsonIgnore
-  private String cardNumber;
-  @JsonIgnore
-  private String expirationDate;
-  @JsonIgnore
-  private String securityCode;
+public record PaymentMethod(String fullName,
+    String cardNumber,
+    String expirationDate,
+    String securityCode) {
 
 }
