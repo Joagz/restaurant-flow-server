@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.joaco.restaurantflowserver.model.Checkout;
 
-public interface CheckoutRepository extends JpaRepository<Checkout, String> {
+public interface CheckoutRepository extends JpaRepository<Checkout, Integer> {
 
 }

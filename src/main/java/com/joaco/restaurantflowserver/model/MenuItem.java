@@ -1,7 +1,5 @@
 package com.joaco.restaurantflowserver.model;
 
-import java.util.List;
-
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Column;
