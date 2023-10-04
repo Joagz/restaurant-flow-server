@@ -1,6 +1,6 @@
 package com.joaco.restaurantflowserver.message;
 
-import java.util.Optional;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joaco.restaurantflowserver.model.Order;
+import com.joaco.restaurantflowserver.model.dto.OrderDto;
 import com.joaco.restaurantflowserver.repos.OrderRepository;
 
 @RestController
@@ -20,13 +21,21 @@ public class MessageController {
 
   @MessageMapping("/order")
   @SendTo("/topic/orders")
-  public ResponseEntity<?> setOrder(String orderId) {
-    Optional<Order> order = repository.findById(orderId);
-    if (order.isPresent())
-      return new ResponseEntity<Order>(order.get(), HttpStatusCode.valueOf(200));
-    else {
-      return new ResponseEntity<String>("Couldn't find order with id " + orderId, HttpStatusCode.valueOf(404));
+  public ResponseEntity<?> setOrder(OrderDto order) {
+    if (order != null) {
+      Order toSave = new Order(
+          (Integer) null,
+          order.name(),
+          new Date(),
+          false,
+          order.items());
+
+      repository.save(toSave);
+
+      return new ResponseEntity<Order>(toSave, HttpStatusCode.valueOf(200));
     }
+    return new ResponseEntity<String>("An unexpected error occured ", HttpStatusCode.valueOf(400));
+
   }
 
 }

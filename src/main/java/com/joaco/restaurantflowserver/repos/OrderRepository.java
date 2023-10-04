@@ -6,7 +6,7 @@ import com.joaco.restaurantflowserver.model.Order;
 import java.util.List;
 
 
-public interface OrderRepository extends JpaRepository<Order, String> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
 
   List<Order> findByCompleted(boolean completed);
 

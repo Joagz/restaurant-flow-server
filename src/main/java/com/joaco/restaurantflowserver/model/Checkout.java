@@ -1,34 +1,48 @@
 package com.joaco.restaurantflowserver.model;
 
-import java.util.List;
-
 import org.hibernate.annotations.GenericGenerator;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "checkouts")
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class Checkout {
 
+  public Checkout(int id, String price, Order order) {
+    this.id = id;
+    this.price = price;
+    this.order = order;
+  }
+
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID, generator = "native")
+  @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
   @GenericGenerator(name = "native", strategy = "native")
-  private String id;
+  private int id;
 
-  @OneToMany
-  private List<Order> orders;
+  private String price;
 
-  private String final_bill;
-
+  @ManyToOne
+  @JoinColumn(referencedColumnName = "id", name = "payment_method", nullable = true)
+  @Nullable
   private PaymentMethod paymentMethod;
+
+  @OneToOne
+  @JoinColumn(referencedColumnName = "order_id", name = "order_id")
+  private Order order;
 
 }
