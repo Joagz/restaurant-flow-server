@@ -1,29 +1,42 @@
-import React from 'react'
+import React from "react";
 
-import { Button } from '@mui/joy';
-import AppBar from '@mui/material/AppBar';
-import { Toolbar, Typography } from '@mui/material';
+import { Button, Link } from "@mui/joy";
+import AppBar from "@mui/material/AppBar";
+import { Toolbar, Typography } from "@mui/material";
 
 export default function Navbar() {
   return (
-    
-    <AppBar position='static' color='transparent'>
-    <Toolbar sx={{ gap: 5 }}>
-      <Typography variant='h6' component='h1'>
+    <Toolbar
+      sx={{
+        gap: 2,
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography variant="h3" component="h1">
         Ciraldoe's
       </Typography>
-
-      <Button href={'/'} variant='plain' color='warning'>
+      <Typography variant="body2" component="p">
+        Las mejores pastas del país.
+      </Typography>
+      <br />
+      <Link  href={"/home"} variant="plain" color="warning">
         Inicio
-      </Button>
-
-      <Button href={'/pedidos'} variant='plain' color='warning'>
+      </Link>
+      <Link  href={"/pedidos"} variant="plain" color="warning">
         Pedidos
-      </Button>
-
-      <Button href={'/menu'} variant='plain' color='warning'>
+      </Link>
+      <Link  href={"/menu"} variant="plain" color="warning">
         Menu
-      </Button>        </Toolbar>
-  </AppBar>
-  )
+      </Link>
+
+      <br />
+      <Typography variant="body2" component="p" fontSize={14}>
+        Para realizar un pedido, ver la sección 'PEDIDOS'.
+      </Typography>
+    </Toolbar>
+  );
 }

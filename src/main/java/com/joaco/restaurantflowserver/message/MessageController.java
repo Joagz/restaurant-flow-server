@@ -20,21 +20,18 @@ public class MessageController {
   private OrderRepository repository;
 
   @MessageMapping("/order")
-  @SendTo("/topic/orders")
+  @SendTo("/topic/order")
   public ResponseEntity<?> setOrder(OrderDto order) {
-    if (order != null) {
-      Order toSave = new Order(
-          (Integer) null,
-          order.name(),
-          new Date(),
-          false,
-          order.items());
+    // Order toSave = new Order(
+    //     (Integer) null,
+    //     order.name(),
+    //     new Date(),
+    //     false,
+    //     null);
 
-      repository.save(toSave);
+    // repository.save(toSave);
 
-      return new ResponseEntity<Order>(toSave, HttpStatusCode.valueOf(200));
-    }
-    return new ResponseEntity<String>("An unexpected error occured ", HttpStatusCode.valueOf(400));
+    return new ResponseEntity<>(order, HttpStatusCode.valueOf(200));
 
   }
 
