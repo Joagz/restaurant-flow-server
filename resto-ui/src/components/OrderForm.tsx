@@ -9,21 +9,20 @@ import {
   ListItem,
   Option,
   Button,
-  Container,
 } from "@mui/joy";
-import { CardActionArea, InputLabel } from "@mui/material";
+import { CardActionArea } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStompClient } from "react-stomp-hooks";
 import CheckoutMenu from "./CheckoutMenu";
-
+import { Payment } from "../interfaces/Order";
+import { checkoutApi } from "../api/checkoutApi";
+import { orderApi } from "../api/orderApi";
+import { Menu } from "../interfaces/Menu";
+import { v4 as uuidv4 } from "uuid";
+import { menuApi } from "../api/menuApi";
+import { PaymentDto } from "../interfaces/PaymentDto";
 type Props = {
-  menus: Array<{
-    id: number;
-    name: string;
-    price: string;
-    description: string;
-    available: boolean;
-  }>;
+  menus: Menu[];
 };
 
 export default function OrderForm({ menus }: Props) {
@@ -32,7 +31,7 @@ export default function OrderForm({ menus }: Props) {
   // ? buyer's name
   const [name, setName] = useState("");
   // ? Selected list of menus
-  const [selectedList, setSelectedList] = useState<any[]>([]);
+  const [selectedList, setSelectedList] = useState<Menu[]>([]);
   // ? Set if trash icon is visible
   const [trashVisible, setTrashVisible] = useState<string>("");
   // ? set if display info or not
@@ -45,38 +44,80 @@ export default function OrderForm({ menus }: Props) {
 
   const stomp = useStompClient();
 
-  function addValue(value: any) {
-    setFinalPrice(finalPrice + Number.parseInt(value.price));
-    setSelectedList([...selectedList, value]);
+  function addValue(id: number) {
+    menuApi.get(`/${id}`).then((res) => {
+      const value = {
+        ...res.data,
+        slug: uuidv4(),
+      };
+      setFinalPrice(finalPrice + Number.parseInt(res.data.price));
+      setSelectedList([...selectedList, value]);
+    });
   }
 
-  function sendOrder() {
+  async function sendOrder(payment: Payment) {
+    payment.total = finalPrice;
+
+    const order = await orderApi
+      .post("", { name, items: selectedList })
+      .then((order) => {
+        checkoutApi
+          .post("", {
+            price: finalPrice,
+            order: order.data.id,
+          })
+          .then((checkout) => {
+            const paymentDto: PaymentDto = {
+              fullName: payment.cardName,
+              expirationDate: payment.cardExpiry,
+              cardType: "CREDIT",
+              company: "VISA",
+              cardNumber: payment.cardNumber,
+              securityCode: payment.cardCvc,
+            };
+
+            checkoutApi.post("/payment", paymentDto, {
+              params: { checkout_id: checkout.data.id },
+              headers: { "Access-Control-Allow-Origin": "*" },
+            });
+          })
+          .catch((err) => console.log(err));
+        return order;
+      })
+      .catch((err) => console.log(err));
+      
+    if (localStorage.getItem("orders")) {
+      const orders = JSON.parse(localStorage.getItem("orders")!);
+      orders.push(order?.data);
+      localStorage.setItem("orders", JSON.stringify(orders));
+    } else {
+      localStorage.setItem("orders", JSON.stringify([order?.data]));
+    }
+
     if (stomp) {
       stomp.publish({
-        body: JSON.stringify({ name, items: selectedList }),
+        body: JSON.stringify(order?.data),
         destination: "/app/order",
       });
       stomp.connectHeaders = {
-        orders: JSON.stringify({ items: selectedList, price: finalPrice }),
+        orders: JSON.stringify({
+          items: selectedList,
+          price: finalPrice,
+        }),
       };
     }
   }
 
   function deleteValue(value: any) {
-    setSelectedList([...selectedList.filter((n) => n.name !== value.name)]);
+    setSelectedList([...selectedList.filter((n) => n.slug !== value.slug)]);
     selectedList.forEach((n) => setFinalPrice(finalPrice - value.price));
-  }
-  useEffect(() => {}, [selectedList]);
-
-  function log(v: any) {
-    addValue(v);
-    console.log(v);
   }
 
   return (
     <>
       <>
         <CheckoutMenu
+          sendOrder={sendOrder}
           checkoutMenuVisible={checkoutMenuVisible}
           setCheckoutMenuVisible={setCheckoutMenuVisible}
         ></CheckoutMenu>
@@ -93,18 +134,24 @@ export default function OrderForm({ menus }: Props) {
         <Select value={value} title="Elige un menú" required>
           <Option value={"Elige un menú"}>Elige un menú</Option>
           {menus.map((v) => (
-            <Option onClick={() => log(v)} value={v}>
+            <Option
+              key={v.slug}
+              onClick={() => {
+                addValue(v.id);
+              }}
+              value={v}
+            >
               {v.name}
             </Option>
           ))}
         </Select>
       </FormControl>
       {selectedList.map((item) => (
-        <Card sx={{ m: 3, gap: 3 }}>
+        <Card key={item.slug} sx={{ m: 3, gap: 3 }}>
           <CardActionArea
-            onMouseEnter={() => setTrashVisible(item.name)}
+            onMouseEnter={() => setTrashVisible(item.slug!)}
             onClick={() =>
-              setInfoDisplay(infoDisplay === item.name ? "" : item.name)
+              setInfoDisplay(infoDisplay === item.slug! ? "" : item.slug!)
             }
             onMouseLeave={() => setTrashVisible("")}
             sx={{
@@ -114,11 +161,11 @@ export default function OrderForm({ menus }: Props) {
             }}
           >
             <Typography>{item.name}</Typography>
-            {trashVisible === item.name && (
+            {trashVisible === item.slug && (
               <Delete onClick={() => deleteValue(item)} color="error"></Delete>
             )}
           </CardActionArea>
-          {infoDisplay === item.name && (
+          {infoDisplay === item.slug && (
             <CardContent sx={{ padding: 3, bgcolor: "#f0f0f0" }}>
               <Typography>{item.description}</Typography>
               <br />

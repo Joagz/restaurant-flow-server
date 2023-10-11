@@ -2,5 +2,5 @@ package com.joaco.restaurantflowserver.model.dto;
 
 public record MenuItemDto(
                 String name, String description,
-                String price) {
+                String price, int id) {
 }
