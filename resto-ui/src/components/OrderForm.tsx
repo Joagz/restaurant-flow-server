@@ -14,7 +14,7 @@ import { CardActionArea } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useStompClient } from "react-stomp-hooks";
 import CheckoutMenu from "./CheckoutMenu";
-import { Payment } from "../interfaces/Order";
+import { Order, Payment } from "../interfaces/Order";
 import { checkoutApi } from "../api/checkoutApi";
 import { orderApi } from "../api/orderApi";
 import { Menu } from "../interfaces/Menu";
@@ -59,7 +59,7 @@ export default function OrderForm({ menus }: Props) {
     payment.total = finalPrice;
 
     const order = await orderApi
-      .post("", { name, items: selectedList })
+      .post<Order>("", { name, items: selectedList })
       .then((order) => {
         checkoutApi
           .post("", {
@@ -101,8 +101,10 @@ export default function OrderForm({ menus }: Props) {
       });
       stomp.connectHeaders = {
         orders: JSON.stringify({
+          id: order?.data.id,
           items: selectedList,
           price: finalPrice,
+          completed: false
         }),
       };
     }

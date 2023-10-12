@@ -1,17 +1,18 @@
 package com.joaco.restaurantflowserver.api;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,6 +82,28 @@ public class OrderApi {
           HttpStatusCode.valueOf(201));
     } catch (Exception e) {
       return new ResponseEntity<String>(e.toString(), HttpStatusCode.valueOf(500));
+    }
+
+  }
+
+  @PutMapping("/edit/{id}")
+  @CrossOrigin("*")
+  public ResponseEntity<?> editOrder(@PathVariable Integer id, @RequestBody Order order) {
+
+    Optional<Order> found = repository.findById(id);
+
+    if (found.isPresent()) {
+
+      var obj = found.get();
+      obj.setCompleted(order.isCompleted());
+      obj.setItems(order.getItems());
+
+      repository.save(obj);
+
+      return ResponseEntity.ok().body(obj);
+
+    } else {
+      return ResponseEntity.status(404).body("not found");
     }
 
   }

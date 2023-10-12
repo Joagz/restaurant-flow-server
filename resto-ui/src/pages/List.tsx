@@ -10,9 +10,11 @@ import OrderDBList from "../components/OrderDBList";
 function List() {
   const [messages, setMessages] = useState<any[]>([]);
   const [dbOrders, setDbOrders] = useState<any[]>([]);
+  
   useEffect(() => {
-    orderApi.get("").then((res) => setDbOrders(res.data));
+    orderApi.get<Order[]>("").then((res) => setDbOrders(res.data.filter(order => !order.completed)));
   }, []);
+
   useSubscription("/topic/order", (message) =>
     setMessages([...messages, message.body])
   );
@@ -20,7 +22,6 @@ function List() {
   return (
     <>
       <Grid container p={5} gap={3}>
-        (la idea es que esto sea una aplicación de escritorio)
         <Typography variant="h4" width={"100%"}>
           Pedidos Pendientes:
         </Typography>

@@ -1,7 +1,8 @@
 import { Grid, Typography, ListItem, Chip, Card, Button } from "@mui/joy";
 import { Paper } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Order } from "../interfaces/Order";
+import { orderApi } from "../api/orderApi";
 
 interface Props {
   message: Order;
@@ -9,6 +10,12 @@ interface Props {
 export default function OrderDBComponent({ message }: Props) {
   const [completed, setCompleted] = useState(false);
   const [confirmAction, setConfirmAction] = useState(false);
+
+  useEffect(() => {
+    message.completed = completed;
+    orderApi.post(`/edit/${message.id}`, { order: message }).then(res => console.log(res));
+  }, [completed]);
+
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { Grid, Typography, ListItem, Chip, Card, Button } from "@mui/joy";
 import { Paper } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { orderApi } from "../api/orderApi";
 interface Item {
   name: string;
   price: string;
@@ -9,21 +10,30 @@ interface Item {
   available: boolean;
 }
 
-type message = {
+type MessageType = {
   headers: any;
   statusCode: any;
   statusCodeValue: any;
   body: {
+    id: number;
     name: string;
     items: Array<Item>;
+    completed: boolean;
   };
 };
 
 export default function OrderComponent({ message }: any) {
   const [completed, setCompleted] = useState(false);
   const [confirmAction, setConfirmAction] = useState(false);
-  const parsedMessage: message = JSON.parse(message);
-  
+  const parsedMessage: MessageType = JSON.parse(message);
+
+
+  useEffect(() => {
+    parsedMessage.body.completed = completed;
+    orderApi.post(`/edit/${parsedMessage.body.id}`, { order: parsedMessage.body }).then(res => console.log(res));
+  }, [completed]);
+
+
   return (
     <>
       {confirmAction && (
