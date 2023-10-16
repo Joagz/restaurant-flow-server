@@ -3,9 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import MainLayout from "./layouts/MainLayout";
-import List from "./pages/List";
+import List from "./pages/protected/List";
 import Pedidos from "./pages/Pedidos";
 import { StompSessionProvider } from "react-stomp-hooks";
+import Completed from "./pages/protected/Completed";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route path="/home" element={<Home />}></Route>
           <Route path="/pedidos" element={<Pedidos />}></Route>
           <Route path="/menu" element={<Home />}></Route>
-          <Route path="/listado-pedidos" element={<List />}></Route>
+          <Route path="/secure/list" element={<List />}></Route>
+          <Route path="/secure/completed" element={<Completed />}></Route>
         </Routes>
       </BrowserRouter>
     </StompSessionProvider>

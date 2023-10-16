@@ -1,7 +1,7 @@
 import { MenuOpenOutlined, MenuOutlined } from "@mui/icons-material";
 import { IconButton, Link } from "@mui/joy";
 import { AppBar, Grid, Toolbar } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function TopNavigation() {
   const [menu, setMenu] = useState(false);

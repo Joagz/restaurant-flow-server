@@ -7,20 +7,22 @@ import {
   Typography,
 } from "@mui/joy";
 import { InputLabel } from "@mui/material";
-import React, { SetStateAction, useEffect, useState } from "react";
-import { Order, Payment } from "../interfaces/Order";
+import { SetStateAction, useEffect, useState } from "react";
+import { Order, Payment } from "../../interfaces/Order";
 import CompletedCheckouts from "./CompletedCheckouts";
 
 type Props = {
   checkoutMenuVisible: boolean;
   setCheckoutMenuVisible: SetStateAction<boolean> | any;
   sendOrder: (payment: Payment) => void;
+  showOrders: boolean;
 };
 
 export default function CheckoutMenu({
   checkoutMenuVisible,
   setCheckoutMenuVisible,
   sendOrder,
+  showOrders,
 }: Props) {
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -31,7 +33,7 @@ export default function CheckoutMenu({
 
   return (
     <>
-      <CompletedCheckouts orders={orders}></CompletedCheckouts>
+      {showOrders && <CompletedCheckouts orders={orders}></CompletedCheckouts>}
 
       {checkoutMenuVisible && (
         <>

@@ -1,8 +1,9 @@
 import { Grid, Typography, ListItem, Chip, Card, Button } from "@mui/joy";
 import { Paper } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Order } from "../interfaces/Order";
-import { orderApi } from "../api/orderApi";
+import { useState } from "react";
+import { Order } from "../../interfaces/Order";
+import { orderApi } from "../../api/orderApi";
+import { useStompClient } from "react-stomp-hooks";
 
 interface Props {
   message: Order;
@@ -10,12 +11,24 @@ interface Props {
 export default function OrderDBComponent({ message }: Props) {
   const [completed, setCompleted] = useState(false);
   const [confirmAction, setConfirmAction] = useState(false);
+  const stomp = useStompClient();
 
-  useEffect(() => {
-    message.completed = completed;
-    orderApi.post(`/edit/${message.id}`, { order: message }).then(res => console.log(res));
-  }, [completed]);
+  const complete = async () => {
+    if (stomp) {
+      message.completed = completed;
+      // stomp.publish({
+      //   destination: "/queue/order",
+      //   body: JSON.stringify(message),
+      // });
 
+      setCompleted(true);
+      await orderApi
+        .put(`/complete/${message.id}`, {
+          headers: { "Access-Control-Allow-Origin": "*" },
+        })
+        .then((res) => console.log(res));
+    }
+  };
 
   return (
     <>
@@ -54,7 +67,7 @@ export default function OrderDBComponent({ message }: Props) {
             </Button>
             <Button
               onClick={() => {
-                setCompleted(true);
+                complete();
                 setConfirmAction(false);
               }}
               variant="outlined"

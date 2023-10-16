@@ -1,7 +1,8 @@
 import { Grid, Typography, ListItem, Chip, Card, Button } from "@mui/joy";
 import { Paper } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { orderApi } from "../api/orderApi";
+import { useState } from "react";
+import { orderApi } from "../../api/orderApi";
+import { useStompClient } from "react-stomp-hooks";
 interface Item {
   name: string;
   price: string;
@@ -26,13 +27,23 @@ export default function OrderComponent({ message }: any) {
   const [completed, setCompleted] = useState(false);
   const [confirmAction, setConfirmAction] = useState(false);
   const parsedMessage: MessageType = JSON.parse(message);
+  const stomp = useStompClient();
 
-
-  useEffect(() => {
-    parsedMessage.body.completed = completed;
-    orderApi.post(`/edit/${parsedMessage.body.id}`, { order: parsedMessage.body }).then(res => console.log(res));
-  }, [completed]);
-
+  const complete = async () => {
+    if (stomp) {
+      parsedMessage.body.completed = completed;
+      // stomp.publish({
+      //   destination: "/queue/order",
+      //   body: JSON.stringify(parsedMessage),
+      // });
+      setCompleted(true);
+      orderApi
+        .put(`/complete/${parsedMessage.body.id}`, {
+          headers: { "Access-Control-Allow-Origin": "*" },
+        })
+        .then((res) => console.log(res));
+    }
+  };
 
   return (
     <>
@@ -71,7 +82,7 @@ export default function OrderComponent({ message }: any) {
             </Button>
             <Button
               onClick={() => {
-                setCompleted(true);
+                complete();
                 setConfirmAction(false);
               }}
               variant="outlined"
@@ -117,11 +128,7 @@ export default function OrderComponent({ message }: any) {
           sx={{ p: 2 }}
         >
           {completed ? (
-            <Chip
-              size="lg"
-              variant="solid"
-              color={"success"}
-            >
+            <Chip size="lg" variant="solid" color={"success"}>
               COMPLETADO
             </Chip>
           ) : (

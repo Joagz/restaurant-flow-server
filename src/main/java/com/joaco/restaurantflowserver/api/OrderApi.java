@@ -1,5 +1,6 @@
 package com.joaco.restaurantflowserver.api;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +40,8 @@ class IgnoreList {
 public class OrderApi {
 
   @Autowired
+  private SimpMessagingTemplate simpMessagingTemplate;
+  @Autowired
   private OrderRepository repository;
   @Autowired
   private MenuItemRepository menuItemRepository;
@@ -43,14 +49,14 @@ public class OrderApi {
   @GetMapping
   @CrossOrigin("*")
   public ResponseEntity<List<Order>> getAllOrders(
-      @RequestParam(value = "completed", required = false) boolean completed) {
+      @RequestParam(value = "completed", required = true) int completed) {
 
-    if (completed) {
-      return new ResponseEntity<List<Order>>(repository.findByCompleted(completed), HttpStatusCode.valueOf(200));
+    if (completed == 1) {
+      return new ResponseEntity<List<Order>>(repository.findByCompleted(true), HttpStatusCode.valueOf(200));
     }
 
-    if (completed == false) {
-      return new ResponseEntity<List<Order>>(repository.findByCompleted(completed), HttpStatusCode.valueOf(200));
+    if (completed == 0) {
+      return new ResponseEntity<List<Order>>(repository.findByCompleted(false), HttpStatusCode.valueOf(200));
     }
 
     return new ResponseEntity<List<Order>>(repository.findAll(), HttpStatusCode.valueOf(200));
@@ -86,17 +92,20 @@ public class OrderApi {
 
   }
 
-  @PutMapping("/edit/{id}")
+  @PutMapping("/complete/{id}")
   @CrossOrigin("*")
-  public ResponseEntity<?> editOrder(@PathVariable Integer id, @RequestBody Order order) {
+  public ResponseEntity<?> editOrder(@PathVariable Integer id
+    //, Principal principal
+  ) {
 
     Optional<Order> found = repository.findById(id);
 
     if (found.isPresent()) {
 
       var obj = found.get();
-      obj.setCompleted(order.isCompleted());
-      obj.setItems(order.getItems());
+      obj.setCompleted(true);
+
+      // simpMessagingTemplate.convertAndSendToUser(principal.getName(), "/queue/order", obj);
 
       repository.save(obj);
 

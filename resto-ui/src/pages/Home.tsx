@@ -1,8 +1,6 @@
-import React from "react";
-import MainLayout from "../layouts/MainLayout";
-import { Grid, Link, Paper, Typography } from "@mui/material";
-import Footer from "../components/Footer";
-import TopNavigation from "../components/TopNavigation";
+import { Grid, Typography } from "@mui/material";
+import Footer from "../components/ui/Footer";
+import TopNavigation from "../components/ui/TopNavigation";
 
 const Home = () => {
   return (

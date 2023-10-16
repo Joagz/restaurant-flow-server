@@ -11,16 +11,12 @@ import {
   Button,
 } from "@mui/joy";
 import { CardActionArea } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useStompClient } from "react-stomp-hooks";
-import CheckoutMenu from "./CheckoutMenu";
-import { Order, Payment } from "../interfaces/Order";
-import { checkoutApi } from "../api/checkoutApi";
-import { orderApi } from "../api/orderApi";
-import { Menu } from "../interfaces/Menu";
+import { useState } from "react";
+import { Menu } from "../../interfaces/Menu";
 import { v4 as uuidv4 } from "uuid";
-import { menuApi } from "../api/menuApi";
-import { PaymentDto } from "../interfaces/PaymentDto";
+import { menuApi } from "../../api/menuApi";
+import CompletedOrdersMenu from "./CompletedOrdersMenu";
+
 type Props = {
   menus: Menu[];
 };
@@ -30,6 +26,7 @@ export default function OrderForm({ menus }: Props) {
   const [value] = useState("Elige un menú");
   // ? buyer's name
   const [name, setName] = useState("");
+  // ? Show orders made
   // ? Selected list of menus
   const [selectedList, setSelectedList] = useState<Menu[]>([]);
   // ? Set if trash icon is visible
@@ -38,11 +35,8 @@ export default function OrderForm({ menus }: Props) {
   const [infoDisplay, setInfoDisplay] = useState<string>("");
   // ? final price
   const [finalPrice, setFinalPrice] = useState<number>(0);
-
   const [checkoutMenuVisible, setCheckoutMenuVisible] =
     useState<boolean>(false);
-
-  const stomp = useStompClient();
 
   function addValue(id: number) {
     menuApi.get(`/${id}`).then((res) => {
@@ -55,61 +49,6 @@ export default function OrderForm({ menus }: Props) {
     });
   }
 
-  async function sendOrder(payment: Payment) {
-    payment.total = finalPrice;
-
-    const order = await orderApi
-      .post<Order>("", { name, items: selectedList })
-      .then((order) => {
-        checkoutApi
-          .post("", {
-            price: finalPrice,
-            order: order.data.id,
-          })
-          .then((checkout) => {
-            const paymentDto: PaymentDto = {
-              fullName: payment.cardName,
-              expirationDate: payment.cardExpiry,
-              cardType: "CREDIT",
-              company: "VISA",
-              cardNumber: payment.cardNumber,
-              securityCode: payment.cardCvc,
-            };
-
-            checkoutApi.post("/payment", paymentDto, {
-              params: { checkout_id: checkout.data.id },
-              headers: { "Access-Control-Allow-Origin": "*" },
-            });
-          })
-          .catch((err) => console.log(err));
-        return order;
-      })
-      .catch((err) => console.log(err));
-      
-    if (localStorage.getItem("orders")) {
-      const orders = JSON.parse(localStorage.getItem("orders")!);
-      orders.push(order?.data);
-      localStorage.setItem("orders", JSON.stringify(orders));
-    } else {
-      localStorage.setItem("orders", JSON.stringify([order?.data]));
-    }
-
-    if (stomp) {
-      stomp.publish({
-        body: JSON.stringify(order?.data),
-        destination: "/app/order",
-      });
-      stomp.connectHeaders = {
-        orders: JSON.stringify({
-          id: order?.data.id,
-          items: selectedList,
-          price: finalPrice,
-          completed: false
-        }),
-      };
-    }
-  }
-
   function deleteValue(value: any) {
     setSelectedList([...selectedList.filter((n) => n.slug !== value.slug)]);
     selectedList.forEach((n) => setFinalPrice(finalPrice - value.price));
@@ -117,13 +56,16 @@ export default function OrderForm({ menus }: Props) {
 
   return (
     <>
-      <>
-        <CheckoutMenu
-          sendOrder={sendOrder}
-          checkoutMenuVisible={checkoutMenuVisible}
-          setCheckoutMenuVisible={setCheckoutMenuVisible}
-        ></CheckoutMenu>
-      </>
+      <CompletedOrdersMenu
+        finalPrice={finalPrice}
+        name={name}
+        selectedList={selectedList}
+        checkoutMenuVisible={checkoutMenuVisible}
+        setCheckoutMenuVisible={setCheckoutMenuVisible}
+      />
+      <Typography fontSize={20} m={3} component={"h1"}>
+        Realizar nuevo pedido
+      </Typography>
 
       <FormControl sx={{ m: 3, gap: 3 }}>
         <Input

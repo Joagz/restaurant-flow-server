@@ -4,5 +4,6 @@ export interface PaymentDto {
   cardType: string;
   company: string;
   cardNumber: string;
+  total: number;
   securityCode: string;
 }

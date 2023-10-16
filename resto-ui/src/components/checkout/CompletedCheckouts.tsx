@@ -1,6 +1,5 @@
 import { Grid, Card, CardContent, Typography, List, ListItem } from "@mui/joy";
-import React from "react";
-import { Order } from "../interfaces/Order";
+import { Order } from "../../interfaces/Order";
 
 type Props = {orders: Order[]};
 

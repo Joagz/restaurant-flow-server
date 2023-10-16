@@ -1,6 +1,6 @@
 import { Container, Typography } from "@mui/joy";
-import OrderForm from "../components/OrderForm";
-import TopNavigation from "../components/TopNavigation";
+import OrderForm from "../components/order/OrderForm";
+import TopNavigation from "../components/ui/TopNavigation";
 import { Menu } from "../interfaces/Menu";
 import { useEffect, useState } from "react";
 import { menuApi } from "../api/menuApi";
@@ -17,7 +17,7 @@ function Pedidos() {
       <TopNavigation></TopNavigation>
       <Container sx={{ mt: 15 }}>
         <Typography fontSize={40} m={3} component={"h1"}>
-          Realiza tu pedido
+          Pedidos
         </Typography>
 
         <OrderForm menus={menus}></OrderForm>

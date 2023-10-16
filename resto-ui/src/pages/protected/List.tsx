@@ -1,21 +1,22 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import OrderComponent from "../components/OrderComponent";
+import { useEffect, useState } from "react";
 import { useSubscription } from "react-stomp-hooks";
-import { orderApi } from "../api/orderApi";
-import { Order } from "../interfaces/Order";
-import OrderList from "../components/OrderList";
-import OrderDBList from "../components/OrderDBList";
+import { orderApi } from "../../api/orderApi";
+import { Order } from "../../interfaces/Order";
+import OrderList from "../../components/order/OrderList";
+import OrderDBList from "../../components/order/OrderDBList";
 
 function List() {
   const [messages, setMessages] = useState<any[]>([]);
   const [dbOrders, setDbOrders] = useState<any[]>([]);
-  
+
   useEffect(() => {
-    orderApi.get<Order[]>("").then((res) => setDbOrders(res.data.filter(order => !order.completed)));
+    orderApi
+      .get<Order[]>("", { params: { completed: 0 } })
+      .then((res) => setDbOrders(res.data.filter((order) => !order.completed)));
   }, []);
 
-  useSubscription("/topic/order", (message) =>
+  useSubscription("/queue/order", (message) =>
     setMessages([...messages, message.body])
   );
 

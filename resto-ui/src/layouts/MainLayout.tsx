@@ -1,6 +1,5 @@
 import { Grid } from '@mui/joy'
-import React from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/ui/Navbar'
 
 type Props = {
     children?: JSX.Element[] | JSX.Element

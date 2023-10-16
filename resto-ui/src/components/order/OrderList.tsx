@@ -1,4 +1,3 @@
-import React from "react";
 import OrderComponent from "./OrderComponent";
 
 type Props = { messages: any[] };
