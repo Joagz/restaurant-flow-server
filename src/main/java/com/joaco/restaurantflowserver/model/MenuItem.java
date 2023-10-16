@@ -30,5 +30,6 @@ public class MenuItem {
   private String price;
   private String description;
   private boolean available;
+  private String image;
 
 }

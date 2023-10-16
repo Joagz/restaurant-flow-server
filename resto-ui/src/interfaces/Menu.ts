@@ -5,4 +5,5 @@ export interface Menu {
   description: string;
   available: boolean;
   slug?: string;
+  image: string;
 }

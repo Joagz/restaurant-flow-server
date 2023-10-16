@@ -1,6 +1,5 @@
 package com.joaco.restaurantflowserver.api;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,9 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +35,6 @@ class IgnoreList {
 @RequestMapping("/api/order")
 public class OrderApi {
 
-  @Autowired
-  private SimpMessagingTemplate simpMessagingTemplate;
   @Autowired
   private OrderRepository repository;
   @Autowired
@@ -84,7 +78,7 @@ public class OrderApi {
     try {
       List<MenuItem> items = new ArrayList<MenuItem>();
       orderDto.items().stream().forEach(item -> items.add(menuItemRepository.findById(item.id()).get()));
-      return new ResponseEntity<Order>(repository.save(new Order(0, orderDto.name(), new Date(), false, items)),
+      return new ResponseEntity<Order>(repository.save(new Order(0, orderDto.name(), new Date(), false, orderDto.finalPrice(), items)),
           HttpStatusCode.valueOf(201));
     } catch (Exception e) {
       return new ResponseEntity<String>(e.toString(), HttpStatusCode.valueOf(500));

@@ -25,7 +25,7 @@ public class PaymentMethod {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private int id;
-  
+
     @Column(name = "full_name")
     private String fullName;
 

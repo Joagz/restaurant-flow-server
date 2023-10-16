@@ -7,12 +7,12 @@ export interface Order {
   completed: boolean;
   createTime: string;
   payment: Payment;
+  finalPrice: number;
 }
 
 export interface Payment {
   cardNumber: string;
   cardName: string;
   cardCvc: string;
-  total: number;
   cardExpiry: string;
 }

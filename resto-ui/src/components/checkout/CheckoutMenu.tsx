@@ -72,7 +72,6 @@ const CardForm = ({ sendOrder }: { sendOrder: (payment: Payment) => void }) => {
         cardName,
         cardExpiry,
         cardCvc,
-        total: 0,
       });
 
       setPaymentAvailable(false);
@@ -148,8 +147,8 @@ const CardForm = ({ sendOrder }: { sendOrder: (payment: Payment) => void }) => {
         </FormControl>
         <Button
           onClick={() => {
-            if (paymentAvailable) checkout();
-            // window.location.reload();
+            if (paymentAvailable)
+              checkout().then(() => window.location.replace("/pedidos"));
           }}
           type="submit"
           color="success"

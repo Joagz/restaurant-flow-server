@@ -37,7 +37,8 @@ public class Order {
   @Column(name = "create_time")
   private Date createTime;
   private boolean completed;
-
+  private int finalPrice;
+  
   @OneToMany
   @JoinTable(name = "order_menus", joinColumns = @JoinColumn(name = "order_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
   private List<MenuItem> items;

@@ -7,7 +7,7 @@ export default function CompletedCheckouts({orders}: Props) {
   return (
     <Grid p={2} container>
       {orders.map((order) => (
-        <Grid xs={12} md={6} px={1}>
+        <Grid xs={12} md={6} p={1}>
           <Card color="success">
             <CardContent>
               <Typography fontSize={25} fontWeight={700}>
@@ -39,7 +39,7 @@ export default function CompletedCheckouts({orders}: Props) {
               </List>
               <br />
               <Typography fontSize={25} fontWeight={700}>
-                Importe final: ${order?.payment?.total}ARS
+                Importe final: ${order?.finalPrice}ARS
               </Typography>
             </CardContent>
           </Card>

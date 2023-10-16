@@ -1,10 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import Footer from "../components/ui/Footer";
 import TopNavigation from "../components/ui/TopNavigation";
 
 const Home = () => {
   return (
-    <Grid container>
+    <Container sx={{ width: { xs: "95%", sm: "80%" } }}>
       <TopNavigation />
       <Grid
         sx={{
@@ -16,7 +16,7 @@ const Home = () => {
           width: "100%",
         }}
       >
-        <Typography variant="h3" component="h1">
+        <Typography variant="h3" component="h1" fontSize={70}>
           Ciraldoe's
         </Typography>
         <Typography variant="body2" component="p">
@@ -24,7 +24,9 @@ const Home = () => {
         </Typography>
       </Grid>
       <Grid p={5} gap={2} xs={12} display={"flex"} flexDirection={"column"}>
-        <Typography variant="h5">Sobre nosotros</Typography>
+        <Typography variant="h5" textAlign={"center"} fontSize={50}>
+          Sobre nosotros
+        </Typography>
         <Typography variant="body2">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Et mollitia
           sint, in sunt est ipsa ipsum ducimus alias magni architecto, nobis,
@@ -46,7 +48,9 @@ const Home = () => {
         </div>
       </Grid>
       <Grid p={5} gap={2} xs={12} display={"flex"} flexDirection={"column"}>
-        <Typography variant="h5">Historia</Typography>
+        <Typography variant="h5" textAlign={"center"} fontSize={50}>
+          Historia
+        </Typography>
         <Typography variant="body2">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Et mollitia
           sint, in sunt est ipsa ipsum ducimus alias magni architecto, nobis,
@@ -68,7 +72,7 @@ const Home = () => {
         </div>
       </Grid>
       <Footer />
-    </Grid>
+    </Container>
   );
 };
 

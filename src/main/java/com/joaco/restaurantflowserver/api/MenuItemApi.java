@@ -38,7 +38,6 @@ public class MenuItemApi {
 
   @PostMapping
   @CrossOrigin("*")
-
   public ResponseEntity<MenuItem> createMenuItem(@RequestBody MenuItemDto menuItem) {
 
     MenuItem save = new MenuItem(
@@ -46,10 +45,29 @@ public class MenuItemApi {
         menuItem.name(),
         menuItem.price(),
         menuItem.description(),
-        true);
+        true,
+        menuItem.image());
 
     repository.save(save);
     return new ResponseEntity<MenuItem>(save, HttpStatusCode.valueOf(201));
+
+  }
+
+  @PostMapping("/many")
+  @CrossOrigin("*")
+  public ResponseEntity<String> insertMany(@RequestBody List<MenuItemDto> menuItems) {
+
+    for (var menuItem : menuItems) {
+      MenuItem save = new MenuItem(
+          0,
+          menuItem.name(),
+          menuItem.price(),
+          menuItem.description(),
+          true,
+          menuItem.image());
+      repository.save(save);
+    }
+    return new ResponseEntity<String>("Saved correctly", HttpStatusCode.valueOf(201));
 
   }
 

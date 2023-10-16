@@ -29,10 +29,8 @@ export default function CompletedOrdersMenu({
   const stomp = useStompClient();
 
   async function sendOrder(payment: Payment) {
-    payment.total = finalPrice;
-
     const order = await orderApi
-      .post<Order>("", { name, items: selectedList })
+      .post<Order>("", { name, items: selectedList, finalPrice: finalPrice })
       .then((order) => {
         checkoutApi
           .post("", {
@@ -40,12 +38,11 @@ export default function CompletedOrdersMenu({
             order: order.data.id,
           })
           .then((checkout) => {
-            const paymentDto: PaymentDto = {
+            var paymentDto: PaymentDto = {
               fullName: payment.cardName,
               expirationDate: payment.cardExpiry,
               cardType: "CREDIT",
               company: "VISA",
-              total: finalPrice,
               cardNumber: payment.cardNumber,
               securityCode: payment.cardCvc,
             };
@@ -59,6 +56,8 @@ export default function CompletedOrdersMenu({
         return order;
       })
       .catch((err) => console.log(err));
+      
+    order!.data.payment = payment;
 
     if (localStorage.getItem("orders")) {
       const orders = JSON.parse(localStorage.getItem("orders")!);
@@ -77,13 +76,11 @@ export default function CompletedOrdersMenu({
         orders: JSON.stringify({
           id: order?.data.id,
           items: selectedList,
-          price: finalPrice,
+          finalPrice: finalPrice,
           completed: false,
         }),
       };
     }
-
-    window.location.replace("/pedidos");
   }
 
   return (
@@ -96,7 +93,7 @@ export default function CompletedOrdersMenu({
       ) : (
         <>
           <Chip
-            sx={{ m: 3, p: 1 }}
+            sx={{ m: 3, p: 1, px: 2 }}
             onClick={() => setShowOrders(!showOrders)}
             variant="outlined"
           >
@@ -107,7 +104,7 @@ export default function CompletedOrdersMenu({
                 alignItems: "center",
               }}
             >
-              Mostrar Pedidos{" "}
+              Mostrar
               {!showOrders ? <ArrowDropDownRounded /> : <ArrowDropUpRounded />}
             </Typography>
           </Chip>
