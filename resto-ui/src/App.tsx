@@ -8,6 +8,7 @@ import Pedidos from "./pages/Pedidos";
 import { StompSessionProvider } from "react-stomp-hooks";
 import Completed from "./pages/protected/Completed";
 import Menus from "./pages/Menus";
+import NewMenu from "./pages/protected/NewMenu";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/menu" element={<Menus />}></Route>
           <Route path="/secure/list" element={<List />}></Route>
           <Route path="/secure/completed" element={<Completed />}></Route>
+          <Route path="/secure/new-menu" element={<NewMenu />}></Route>
         </Routes>
       </BrowserRouter>
     </StompSessionProvider>

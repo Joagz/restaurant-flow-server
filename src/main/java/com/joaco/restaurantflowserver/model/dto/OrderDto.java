@@ -2,6 +2,8 @@ package com.joaco.restaurantflowserver.model.dto;
 
 import java.util.List;
 
-public record OrderDto(String name, List<MenuItemDto> items, Integer id, Boolean completed, int finalPrice) {
+import com.joaco.restaurantflowserver.model.MenuItem;
+
+public record OrderDto(String name, List<MenuItem> items, Integer id, Boolean completed, int finalPrice) {
 
 }

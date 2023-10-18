@@ -1,0 +1,59 @@
+[
+
+  Esto es un archivo JSON viejo, con info de los menúes, lo único que no sirve es el atributo "imagen" 
+
+    {
+    "name": "Spaghetti Carbonara",
+    "description": "Clásico plato de pasta italiano con huevos, queso, panceta y pimienta negra.",
+    "image": "https://th.bing.com/th/id/OIP.3MJODhMHPQg6v11AKki79QHaFj?pid=ImgDet&rs=1",
+    "price": 1299.00
+  },
+  {
+    "name": "Coq au Vin",
+    "description": "Un plato francés de pollo cocido con vino tinto, champiñones y cebolla.",
+    "image": "https://th.bing.com/th/id/OIP.NFzHhUGYNmvZtNrfFzjcUQHaJQ?pid=ImgDet&rs=1",
+    "price": 1850.00
+  },
+  {
+    "name": "Lasagna Bolognese",
+    "description": "Capas de pasta, salsa de carne, bechamel y queso horneados a la perfección.",
+    "image": "https://th.bing.com/th/id/OIP.yBeGhuIHcmyLs9HYqElyYwHaE5?pid=ImgDet&rs=1",
+    "price": 1575.00
+  },
+  {
+    "name": "Ravioli Ricotta e Spinaci",
+    "description": "Pasta italiana rellena con ricotta y espinacas.",
+    "image": "https://cdn.ilclubdellericette.it/wp-content/uploads/2017/10/ravioli_ricotta-e-spinaci-1580x1000.jpg",
+    "price": 1425.00
+  },
+  {
+    "name": "Penne alla Vodka",
+    "description": "Pasta italiana en una salsa cremosa de tomate y vodka.",
+    "image": "https://th.bing.com/th/id/R.f60ccfb7c72bb10bfd1aa9a92b5db356?rik=77sFbntNFIjEPg&riu=http%3a%2f%2fwww.foodiecrush.com%2fwp-content%2fuploads%2f2017%2f06%2fLighter-Penne-Alla-Vodka-Recipe-foodiecrush.com-015.jpg&ehk=ZZMWDSeoHSgD1THMtkvvzvAFfyiY6Z36wwka8P%2bnF8I%3d&risl=&pid=ImgRaw&r=0",
+    "price": 1395.00
+  },
+  {
+    "name": "Quiche Lorraine",
+    "description": "Una tarta salada francesa rellena de bacon, queso y crema.",
+    "image": "https://th.bing.com/th/id/OIP.jupSNi7TUtYATWRbbl6nvwHaLH?pid=ImgDet&rs=1",
+    "price": 1675.00
+  },
+  {
+    "name": "Fettuccine Alfredo",
+    "description": "Pasta italiana cremosa con mantequilla, nata y queso Parmesano.",
+    "image": "https://www.modernhoney.com/wp-content/uploads/2018/08/Fettuccine-Alfredo-Recipe-1.jpg",
+    "price": 1250.00
+  },
+  {
+    "name": "Bouillabaisse",
+    "description": "Un guiso tradicional francés de pescado con mariscos variados y hierbas aromáticas.",
+    "image": "https://th.bing.com/th/id/R.1822f221299bb60de0eb88075d7ffd83?rik=D4LYeZav8llDww&riu=http%3a%2f%2fimg.taste.com.au%2fxevn8hx3%2ftaste%2f2016%2f11%2fbouillabaisse-78546-1.jpeg&ehk=6HsyoEyo8vqrc0SgCnHkt%2bKA3swGHb8Z7g2QRzVAZ%2b0%3d&risl=&pid=ImgRaw&r=0",
+    "price": 2299.00
+  },
+  {
+    "name": "Cannelloni di Carne",
+    "description": "Grandes tubos de pasta italiana rellenos de una sabrosa mezcla de carne.",
+    "image": "https://th.bing.com/th/id/R.5ba9223b9da20ba3be3091d98e941a7f?rik=b8jJMSJwX7iROA&riu=http%3a%2f%2fblog.giallozafferano.it%2flebistro%2fwp-content%2fuploads%2f2015%2f09%2fcannelloni-5-monkey.jpg&ehk=dTneJI57oo1y%2f025AiBq6lBnWAPwd79XRJlO1rWECUI%3d&risl=&pid=ImgRaw&r=0",
+    "price": 1600.00
+  }
+]

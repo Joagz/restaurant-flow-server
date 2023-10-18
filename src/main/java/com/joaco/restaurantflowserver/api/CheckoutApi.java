@@ -69,11 +69,27 @@ public class CheckoutApi {
         // ? In a real app execute payment method call and extract the payment
         System.out.println(paymentMethod.toString() + " \n\rregistered new payment");
         paymentMethodRepository.save(paymentMethod);
-        checkoutRepository.save(checkout); // update checkout      
+        checkoutRepository.save(checkout);
       } else {
+
         PaymentMethod paymentMethod = paymentMethodRepository.findByCardNumber(paymentDto.cardNumber()).get(0);
-        checkout.setPaymentMethod(paymentMethod);
-        checkoutRepository.save(checkout); // update checkout      
+
+        PaymentMethod paymentCheck = new PaymentMethod(
+            paymentMethod.getId(),
+            paymentDto.fullName(),
+            paymentDto.expirationDate(),
+            paymentDto.cardType(),
+            paymentDto.company(),
+            paymentDto.cardNumber(),
+            paymentDto.securityCode());
+
+        if (paymentMethod.equals(paymentCheck)) {
+          checkout.setPaymentMethod(paymentMethod);
+          checkoutRepository.save(checkout);
+        } else {
+          return new ResponseEntity<>("CARD NOT MATCHED OR NOT FOUND",
+              HttpStatusCode.valueOf(400));
+        }
       }
       return new ResponseEntity<String>("Checkout payment set successfully. ID: " + checkout_id,
           HttpStatusCode.valueOf(201));

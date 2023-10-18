@@ -40,7 +40,7 @@ public class Checkout {
   @Nullable
   private PaymentMethod paymentMethod;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(referencedColumnName = "order_id", name = "order_id")
   private Order order;
 

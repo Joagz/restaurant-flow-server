@@ -71,7 +71,11 @@ export default function OrderTableItem({ order, displayOnly }: Props) {
           </Card>
         </div>
       )}
-      <tr style={{ backgroundColor: `${completed ? "#00ff00aa" : ""}` }}>
+      <tr
+        style={{
+          backgroundColor: `${completed ? "#00ff00aa" : ""}`,
+        }}
+      >
         <td>
           <Typography fontWeight={600}>{order.name}</Typography>
         </td>

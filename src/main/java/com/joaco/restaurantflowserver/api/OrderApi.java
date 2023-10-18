@@ -77,8 +77,9 @@ public class OrderApi {
   public ResponseEntity<?> createOrder(@RequestBody OrderDto orderDto) {
     try {
       List<MenuItem> items = new ArrayList<MenuItem>();
-      orderDto.items().stream().forEach(item -> items.add(menuItemRepository.findById(item.id()).get()));
-      return new ResponseEntity<Order>(repository.save(new Order(0, orderDto.name(), new Date(), false, orderDto.finalPrice(), items)),
+      orderDto.items().stream().forEach(item -> items.add(menuItemRepository.findById(item.getId()).get()));
+      return new ResponseEntity<Order>(
+          repository.save(new Order(0, orderDto.name(), new Date(), false, orderDto.finalPrice(), items)),
           HttpStatusCode.valueOf(201));
     } catch (Exception e) {
       return new ResponseEntity<String>(e.toString(), HttpStatusCode.valueOf(500));
@@ -89,7 +90,7 @@ public class OrderApi {
   @PutMapping("/complete/{id}")
   @CrossOrigin("*")
   public ResponseEntity<?> editOrder(@PathVariable Integer id
-    //, Principal principal
+  //, Principal principal
   ) {
 
     Optional<Order> found = repository.findById(id);

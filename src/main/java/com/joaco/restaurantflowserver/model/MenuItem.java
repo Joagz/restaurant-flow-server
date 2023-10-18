@@ -2,11 +2,17 @@ package com.joaco.restaurantflowserver.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.micrometer.common.lang.Nullable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,6 +36,11 @@ public class MenuItem {
   private String price;
   private String description;
   private boolean available;
-  private String image;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(referencedColumnName = "id", name = "image", nullable = true)
+  @Nullable
+  @JsonIgnore
+  private Image image;
 
 }

@@ -63,7 +63,7 @@ function Menus() {
                           width: "100%",
                           borderRadius: 10,
                         }}
-                        src={menu.image}
+                        src={`http://${process.env.REACT_APP_SERVER_ADDRESS}:8080/api/image/${menu.id}`}
                         alt="menu"
                       ></img>
                     </>
