@@ -9,6 +9,7 @@ import { StompSessionProvider } from "react-stomp-hooks";
 import Completed from "./pages/protected/Completed";
 import Menus from "./pages/Menus";
 import NewMenu from "./pages/protected/NewMenu";
+import Login from "./pages/Login";
 
 function App() {
   return (

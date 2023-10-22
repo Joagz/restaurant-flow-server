@@ -15,6 +15,14 @@ export default function OrderNavigation() {
       >
         Completos
       </Link>
+      <Link
+        variant="soft"
+        fontSize={25}
+        color="neutral"
+        href="/secure/new-menu"
+      >
+        Nuevo Menú
+      </Link>
     </Grid>
   );
 }

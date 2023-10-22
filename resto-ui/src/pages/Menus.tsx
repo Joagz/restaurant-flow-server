@@ -55,19 +55,21 @@ function Menus() {
                   </Typography>
                   <Typography variant={"body2"}>{menu.description}</Typography>{" "}
                   <Typography variant={"body1"}>${menu.price}ARS</Typography>{" "}
-                  {showMenuInfo === menu.id && (
-                    <>
-                      <img
-                        style={{
-                          height: "auto",
-                          width: "100%",
-                          borderRadius: 10,
-                        }}
-                        src={`http://${process.env.REACT_APP_SERVER_ADDRESS}:8080/api/image/${menu.id}`}
-                        alt="menu"
-                      ></img>
-                    </>
-                  )}
+                  <img
+                    style={{
+                      height: "auto",
+                      width: "100%",
+                      borderRadius: 10,
+                      visibility: `${
+                        showMenuInfo === menu.id ? "visible" : "hidden"
+                      }`,
+                      position: `${
+                        showMenuInfo === menu.id ? "relative" : "absolute"
+                      }`,
+                    }}
+                    src={`http://${process.env.REACT_APP_SERVER_ADDRESS}:8080/api/image/${menu.id}`}
+                    alt="menu"
+                  ></img>
                 </CardContent>
               </Card>
             </Grid>

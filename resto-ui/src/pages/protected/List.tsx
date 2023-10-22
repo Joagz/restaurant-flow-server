@@ -5,6 +5,7 @@ import { orderApi } from "../../api/orderApi";
 import { Order } from "../../interfaces/Order";
 import OrderNavigation from "../../components/ui/OrderNavigation";
 import OrderTable from "../../components/order/OrderTable";
+import Authenticate from "../auth/Authenticate";
 
 function List() {
   const [messages, setMessages] = useState<any[]>([]);
@@ -20,21 +21,21 @@ function List() {
   );
 
   return (
-    <>
-      <Grid container p={5} gap={5}>
-        <OrderNavigation />
-        <Typography variant="h4" width={"100%"}>
-          Pedidos Pendientes:
-        </Typography>
+    <Authenticate>
+        <Grid container p={5} gap={5}>
+          <OrderNavigation />
+          <Typography variant="h4" width={"100%"}>
+            Pedidos Pendientes:
+          </Typography>
 
-        <OrderTable
-          orders={[
-            ...dbOrders,
-            ...messages.map((message) => JSON.parse(message).body),
-          ]}
-        ></OrderTable>
-      </Grid>
-    </>
+          <OrderTable
+            orders={[
+              ...dbOrders,
+              ...messages.map((message) => JSON.parse(message).body),
+            ]}
+          ></OrderTable>
+        </Grid>
+    </Authenticate>
   );
 }
 
