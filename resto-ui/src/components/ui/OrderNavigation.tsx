@@ -3,11 +3,25 @@ import React from "react";
 
 export default function OrderNavigation() {
   return (
-    <Grid display={"flex"} gap={5} justifyContent={"center"}>
-      <Link variant="soft" fontSize={25} color="neutral" href="/secure/list">
+    <Grid
+      display={"flex"}
+      gap={5}
+      width={'100%'}
+      bgcolor={'#FFF'}
+      height={'fit-content'}
+      justifyContent={"center"}
+    >
+      <Link
+        sx={{ height: 50 }}
+        variant="soft"
+        fontSize={25}
+        color="neutral"
+        href="/secure/list"
+      >
         Pendientes
       </Link>
       <Link
+        sx={{ height: 50 }}
         variant="soft"
         fontSize={25}
         color="neutral"
@@ -16,6 +30,7 @@ export default function OrderNavigation() {
         Completos
       </Link>
       <Link
+        sx={{ height: 50 }}
         variant="soft"
         fontSize={25}
         color="neutral"

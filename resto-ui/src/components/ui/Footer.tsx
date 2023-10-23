@@ -1,3 +1,4 @@
+import { Divider } from "@mui/joy";
 import { Grid, Link, Typography } from "@mui/material";
 
 export default function Footer() {
@@ -15,10 +16,14 @@ export default function Footer() {
         Web desarrollada por Joaquín Gómez | 2023
       </Typography>
       <Typography variant="caption">
-        <Link sx={{ textDecoration: "none" }} href="https://github.com/Joagz">
-          VER MÁS PROYECTOS
+        <Link sx={{ textDecoration: "none" }} href="/secure">
+          PARA EMPLEADOS
         </Link>
       </Typography>
+      <Divider />{" "}
+      <Link sx={{ textDecoration: "none" }} href="https://github.com/Joagz">
+        VER MÁS PROYECTOS
+      </Link>
     </Grid>
   );
 }

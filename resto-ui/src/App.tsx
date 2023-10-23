@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
@@ -9,7 +8,7 @@ import { StompSessionProvider } from "react-stomp-hooks";
 import Completed from "./pages/protected/Completed";
 import Menus from "./pages/Menus";
 import NewMenu from "./pages/protected/NewMenu";
-import Login from "./pages/Login";
+import HomeAdmin from "./pages/protected/HomeAdmin";
 
 function App() {
   return (
@@ -23,6 +22,7 @@ function App() {
           <Route path="/home" element={<Home />}></Route>
           <Route path="/pedidos" element={<Pedidos />}></Route>
           <Route path="/menu" element={<Menus />}></Route>
+          <Route path="/secure" element={<HomeAdmin />}></Route>
           <Route path="/secure/list" element={<List />}></Route>
           <Route path="/secure/completed" element={<Completed />}></Route>
           <Route path="/secure/new-menu" element={<NewMenu />}></Route>
